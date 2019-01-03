@@ -1,0 +1,100 @@
+@startuml
+left to right direction
+
+:乗客: as passenger
+:車両: as vehicle
+:オペレータ: as operator
+:乗合サービス: as rideSharingService
+
+package 乗客アカウント {
+
+    (アカウントを登録する) as registerPassengerAccount
+
+    (ログインする) as login
+
+    (ランドマークを管理する) as manageLandmark
+}
+
+package 車両 {
+
+    (車両を管理する) as manageVehicle
+
+    (車両一覧を閲覧する) as listVehicle
+
+    (稼働状態を変更する) as changeVehicleStatus
+
+    (現在位置を更新する) as updateVehicleLocation
+}
+
+package 依頼 {
+
+    (配車依頼する) as createRequest
+    (ランドマークから乗降地点を選択する) as selectLocationFromLandmark
+    createRequest --> selectLocationFromLandmark : invokes
+
+    (配車依頼一覧を閲覧する) as listRequest
+    (配車依頼を閲覧する) as viewRequest
+
+    (配車依頼をキャンセルする) as cancelRequest
+    (配車依頼の状態を更新する) as updateRequestStatus
+    updateRequestStatus ..> cancelRequest : extends
+}
+
+package 運行 {
+
+    (運行一覧を閲覧する) as listOperation
+    (運行を閲覧する) as viewOperation
+
+    (運行を作成する) as createOperation
+    (運行を更新する) as updateOperation
+    (運行ルートを更新する) as updateOperationRoute
+    (送迎のステータスを更新する) as updateOperationStatus
+    updateOperation ..> updateOperationRoute : extends
+    updateOperation ..> updateOperationStatus : extends
+
+    (運行を調整する) as adjustOperation
+    (送迎を作成する) as createTrip
+    adjustOperation --> listRequest : invokes
+    adjustOperation --> listVehicle : invokes
+    adjustOperation --> listOperation : invokes
+    adjustOperation --> createOperation : invokes
+    adjustOperation --> updateRequestStatus : invokes
+    adjustOperation --> updateOperation : invokes
+    createOperation --> createTrip : invokes
+
+    (送迎一覧を閲覧する) as listTrip
+    (送迎を閲覧する) as viewTrip
+}
+
+
+
+
+'##################################
+passenger - registerPassengerAccount
+passenger -- login
+
+login -> createRequest : precedes
+login -> manageLandmark : precedes
+login --> listRequest : precedes
+login --> viewRequest : precedes
+login --> cancelRequest : precedes
+login --> viewOperation : precedes
+login --> listTrip : precedes
+login --> viewTrip : precedes
+
+vehicle -- viewOperation
+vehicle -- changeVehicleStatus
+vehicle -- updateVehicleLocation
+vehicle -- updateOperationStatus
+
+operator -- manageVehicle
+operator -- changeVehicleStatus
+operator -- listOperation
+
+rideSharingService -- adjustOperation
+
+@enduml
+
+
+
+乗客からは送迎ではなく予約として全て見えるようにした方が良いかも

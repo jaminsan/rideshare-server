@@ -1,0 +1,82 @@
+@startuml
+!include common.puml
+
+usecase submitTripRequestUC as "送迎依頼を申請する
+
+--
+アクター
+ユーザ
+
+--
+目的
+車両に送迎してもらう為
+
+--
+トリガー
+ユーザが車両に送迎を依頼したい時
+
+--
+メインフロー
+1. アクターは送迎依頼の作成を要求する
+2. システムは送迎依頼の入力を求める
+3. アクターは送迎依頼を入力する
+3-1-1. アクターは乗車地点を選択する
+3-1-2. システムは選択された乗車地点に最も近い送迎可能地点の情報を表示する
+3-1-3. アクターは乗車地点の入力を完了する
+3-2-1. アクターは降車地点を選択する
+3-2-2. システムは選択された降車地点に最も近い送迎可能地点の情報を表示する
+3-2-3. アクターは降車地点の入力を完了する
+3-3-1. アクターは希望時刻を入力する
+3-3-2. アクターは希望時刻の入力を完了する
+4. アクターは送迎依頼の入力を完了する
+5. アクターは送迎依頼の申請を要求する
+6. システムは送迎依頼を登録する
+"
+
+
+'############################################################
+actor "ユーザ" as user
+
+boundary "送迎依頼申請画面" as submitTripRequestPage
+boundary "ホーム画面" as homePage
+
+control "申請内容をチェクする" as verifyTripRequest
+control "送迎依頼を申請する" as submitTripRequest
+control "送迎依頼を表示する" as showTripRequest
+control "地点が存在しないエラーを表示する" as showErrorLocationNotFound
+control createTripRequest as "送迎依頼を作成する
+処理状態を処理中にする
+"
+control "地点の存在有無をチェックする" as verifyLocation
+control "他の送迎依頼との整合性をチェックする" as verifyTripRequestConsistency
+control "送迎依頼不整合のエラーを表示する" as showErrorTripRequestOverlap
+control findProcessingList as "処理中の送迎依頼を取得する
+ユーザに紐づく送迎依頼を取得する
+"
+
+entity "送迎依頼" as tripRequest
+entity "地点" as location
+
+
+'############################################################
+user -- submitTripRequestPage
+submitTripRequestPage --> verifyTripRequest : 「申請」ボタンをクリックする
+
+verifyTripRequest --> verifyLocation
+verifyLocation --> location : 取得
+verifyLocation --> showErrorLocationNotFound : location not found
+showErrorLocationNotFound --> submitTripRequestPage
+verifyTripRequest --> verifyTripRequestConsistency
+verifyTripRequestConsistency --> findProcessingList
+findProcessingList --> tripRequest
+verifyTripRequestConsistency --> showErrorTripRequestOverlap : trip request overlap
+showErrorTripRequestOverlap --> submitTripRequestPage
+verifyTripRequest --> createTripRequest : 正当
+
+createTripRequest --> submitTripRequest
+submitTripRequest --> tripRequest : 永続化
+submitTripRequest --> showTripRequest : 申請成功
+showTripRequest --> homePage
+
+
+@enduml

@@ -1,0 +1,125 @@
+@startuml
+hide empty members
+
+!define DEFAULT bae4b8
+
+entity "乗客アカウント" as passengerAccount {
+    電話番号
+    メールアドレス
+}
+entity "乗客" as passenger
+
+entity "車両" as vehicle {
+    最大乗車人数
+    現在位置
+    稼働状態
+    平均移動速度
+}
+
+entity "ランドマーク" as landmark {
+    名前
+}
+
+entity "送迎依頼" as demand {
+    乗車人数
+}
+entity "処理状態" as allocationStatus
+entity "処理中" as allocationInProcessing
+entity "受理" as allocationSuccess
+entity "拒否" as allocationDenied {
+    送迎拒否理由
+}
+entity "支払い" as payment {
+    クレジットカード情報
+}
+entity "乗車地点" as pickUpLocation
+entity "降車地点" as dropOffLocation
+entity "希望乗車時刻" as expectedPickUpTime
+entity "希望降車時刻" as expectedDropOffTime
+
+entity "運行" as operation
+entity "ルート" as operationRoute
+
+entity "送迎" as trip {
+    移動距離
+    移動時間
+}
+entity "送迎状態履歴" as tripStatusChanges
+entity "送迎状態" as tripStatus
+entity "迎車中" as pickingUp
+entity "車両到着" as waiting
+entity "実車中" as tripping
+entity "送迎完了" as completed
+entity "ルート" as tripRoute {
+    乗合相手
+}
+entity "運賃" as receipt {
+    ベース料金
+    距離運賃
+    迎車料金
+    乗合割引
+}
+entity "経由地点" as tripLocation {
+    予想到着時刻
+    到着予定時刻
+    到着締切時刻
+}
+
+entity "乗合" as rideSharing
+
+entity "エリア" as area
+entity "運行エリア" as operationArea
+entity "サービスエリア" as serviceArea
+
+entity "地点" as location
+
+entity "送迎可能地点" as availableLocation
+
+
+'####################################
+operation --> vehicle
+operation o-left-> trip
+operation -right-> operationArea
+
+demand --> pickUpLocation
+demand --> dropOffLocation
+demand --> payment
+demand --> passenger
+demand -left-> allocationStatus
+demand --> expectedPickUpTime
+demand --> expectedDropOffTime
+allocationStatus <|-- allocationInProcessing
+allocationStatus <|-- allocationSuccess
+allocationStatus <|-- allocationDenied
+
+trip ----> demand
+trip -left-> tripStatusChanges
+trip --> tripRoute
+trip -up-> receipt
+
+tripStatusChanges --> tripStatus
+tripStatus <|-down- pickingUp
+tripStatus <|-down- waiting
+tripStatus <|-down- tripping
+tripStatus <|-down- completed
+
+vehicle -down-> operationRoute
+operationRoute o--> trip
+
+tripRoute o--> demand
+tripRoute o--> tripLocation
+
+passenger --> passengerAccount
+
+passengerAccount o--> landmark
+
+location <-- tripLocation
+location <-- landmark
+location <--o availableLocation
+location <-- pickUpLocation
+location <-- dropOffLocation
+
+area <|-- operationArea
+area <|-- serviceArea
+
+@enduml

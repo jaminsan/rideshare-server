@@ -1,0 +1,69 @@
+@startuml
+!include common.puml
+
+usecase registerLandmarkUC as "ランドマークを登録する
+
+--
+アクター
+ユーザ
+
+--
+目的
+送迎依頼申請でよく入力するランドマークを登録するため
+登録したランドマークは送迎依頼申請時に選択できる
+
+--
+トリガー
+ユーザがランドマークを登録したい時
+
+--
+メインフロー
+1. アクターはランドマークの作成を要求する
+2. システムはランドマークの入力を求める
+3. アクターはランドマークを入力する
+3-1-1. アクターは地点を選択する
+3-1-2. システムは選択された地点に最も近い送迎可能地点の情報を表示する
+3-1-3. アクターは地点の入力を完了する
+3-2-1. アクターは名前を入力する
+3-2-2. アクターは名前の入力を完了する
+3-3-1. アクターはメモを入力する
+3-3-2. アクターはメモの入力を完了する
+4. アクターはランドマークの入力を完了する
+5. アクターはランドマークの登録を要求する
+6. システムはランドマークを登録する
+"
+
+
+'############################################################
+actor "ユーザ" as user
+
+boundary "ランドマーク登録画面" as landmarkRegistrationPage
+boundary "ランドマーク管理画面" as landmarkManagementPage
+
+control "地点の存在有無をチェックする" as verifyLocation
+control "ランドマークをチェックする" as verifyLandmark
+control "地点が存在しないエラーを表示する" as showErrorLocationNotFound
+control "ランドマークを作成する" as createLandmark
+control "ランドマークを登録する" as registerLandmark
+control "ランドマークを表示する" as showLandmark
+
+entity "地点" as location
+entity "ランドマーク" as landmark
+
+'############################################################
+user -- landmarkRegistrationPage
+
+landmarkRegistrationPage --> verifyLandmark : 「登録」ボタンをクリックする
+
+verifyLandmark --> verifyLocation
+verifyLocation --> location : 取得
+verifyLocation --> showErrorLocationNotFound : location not found
+verifyLocation --> landmarkRegistrationPage
+
+verifyLandmark --> createLandmark : 正当
+createLandmark --> registerLandmark
+registerLandmark --> landmark : 永続化
+registerLandmark --> showLandmark
+showLandmark --> landmarkManagementPage
+
+@enduml

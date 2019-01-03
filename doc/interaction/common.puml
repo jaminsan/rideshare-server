@@ -1,0 +1,21 @@
+@startuml
+skinparam sequence {
+    AllowColor #555
+}
+
+skinparam control {
+    BackGroundColor #FFFFCC
+    BorderColor #777
+    DefaultTextAlignment Center
+}
+
+skinparam entity {
+    BackGroundColor #FFCCFF
+    BorderColor #777
+}
+
+skinparam boundary {
+    BackGroundColor #CCFFFF
+    BorderColor #777
+}
+@enduml

@@ -1,0 +1,42 @@
+@startuml
+!include common.puml
+
+usecase adjustOperationUC as "運行を調整する
+
+--
+アクター
+システムワーカー
+
+--
+目的
+処理中の送迎依頼をもとに運行を調整あるいは新たに作成するため
+車両に乗客の送迎を依頼するため
+
+--
+トリガー
+ユーザが送迎依頼を作成した時
+
+--
+メインフロー
+1. システムは送迎依頼に対して見積もりを作成する
+2. システムは送迎依頼を受理する
+3. システムは
+"
+
+
+'############################################################
+actor "システム" as system
+
+control "運行を調整する" as adjustOperation
+control "送迎依頼の見積もりを作成する" as createTripEstimation
+
+entity "運行" as operation
+entity "車両" as vehicle
+entity "送迎見積" as tripEstimation
+entity "送迎依頼" as tripRequest
+entity "送迎予約" as tripReservation
+
+'############################################################
+
+
+@enduml

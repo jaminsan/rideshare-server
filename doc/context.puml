@@ -1,0 +1,39 @@
+@startuml
+
+actor "乗客" as passenger
+actor "車両" as vehicle
+actor "オペレータ" as operator
+
+node "乗合サービス" as rideshareService {
+    node "認証API" as authApi
+    node "乗客API" as passengerApi
+    node "車両API" as vehicleApi
+    node "オペレータAPI" as operatorApi
+
+    agent "運行最適化エンジン" as optEngine
+
+    agent "乗客アプリ" as passengerApp
+    agent "車載アプリ" as vehicleApp
+    agent "オペレータアプリ" as operatorApp
+}
+
+agent "タクシー会社" as taxiCompany
+agent "Google Services API" as google
+
+
+'##################################################
+passenger --> passengerApp
+passengerApp -right-> authApi
+passengerApp --> passengerApi
+
+operator --> operatorApp
+operator -up- taxiCompany
+operatorApp --> operatorApi
+operatorApp --> google
+
+vehicle --> vehicleApp
+vehicle -- taxiCompany
+vehicleApp --> vehicleApi
+
+
+@enduml

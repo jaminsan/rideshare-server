@@ -1,0 +1,63 @@
+@startuml
+
+!include common.puml
+
+usecase registerLandmarkUC as "送迎可能地点を取得する
+
+--
+アクター
+ユーザ
+
+--
+目的
+ユーザが選択した地点を補正するため
+ユーザが選択した地点は車両が送迎可能な地点から離れていると正しい運行調整ができないため
+ランデブーを成功しやすくするため
+
+--
+トリガー
+送迎依頼申請で乗車地点と降車地点を入力する時
+ランドマーク登録で地点を入力する時
+
+--
+メインフロー
+1. アクターは送迎可能地点の取得を要求する
+2. システムは検索条件の入力を求める
+3. アクターは検索条件を入力する
+3-1-1. アクターは緯度を入力する
+3-1-2. アクターは緯度の入力を完了する
+3-2-1. アクターは経度を入力する
+3-2-2. アクターは経度の入力を完了する
+4. アクターは検索条件の入力を完了する
+5. システムは送迎可能地点を提示する
+"
+
+
+'############################################################
+actor "ユーザ" as user
+
+boundary "任意の画面" as anyPage
+
+control "検索条件をチェックする" as verifyLookupCondition
+control "最も近い地点を取得する" as lookUpNearestLocation
+control "エリア外のエラーを表示する" as showErrorOutOfArea
+control "地点を表示する" as showLocation
+
+entity "地点" as location
+entity "エリア" as area
+
+
+'############################################################
+user --> anyPage
+
+anyPage --> verifyLookupCondition
+verifyLookupCondition --> area : 取得
+verifyLookupCondition --> showErrorOutOfArea : latitude/longitude out of area
+showErrorOutOfArea --> anyPage
+
+verifyLookupCondition --> lookUpNearestLocation
+lookUpNearestLocation --> location
+lookUpNearestLocation --> showLocation
+showLocation --> anyPage
+
+@enduml
