@@ -1,14 +1,13 @@
-package ridesharing.domain.vehicle
+package ridesharing.domain.operation.vehicle
 
 import ridesharing.domain.traffic.Location
-import ridesharing.domain.vehicle.trip.Trip
 
 case class Vehicle(
   currentLocation:      Location,
   state:                State,
   seatCount:            Int,
   speedMeterPerSeconds: Int,
-  trips:                List[Trip] = Nil,
+  schedules:            List[Long] = Nil,
   id:                   Option[Long] = None
 ) {
 

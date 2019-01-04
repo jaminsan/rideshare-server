@@ -1,4 +1,4 @@
-package ridesharing.domain.vehicle
+package ridesharing.domain.operation.vehicle
 
 sealed trait State
 
