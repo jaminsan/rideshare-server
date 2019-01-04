@@ -9,7 +9,7 @@ import ridesharing.domain.operation.vehicle.Vehicle
 case class OperationSchedule(
   vehicles:  List[Vehicle],
   trips:     List[Trip],
-  schedules: List[Schedule[ScheduleDone]],
+  schedules: List[Schedule],
   id:        Option[Long]
 ) {
 

@@ -2,13 +2,13 @@ package ridesharing.domain.operation
 
 import ridesharing.domain.traffic.Location
 
-sealed abstract class Schedule[A <: ScheduleDone](
+sealed abstract class Schedule(
   duration:  Duration,
   location:  Location,
   seatCount: Int,
   vehicleId: Long,
   tripId:    Long,
-  done:      Option[A] = None,
+  done:      Option[ScheduleDone] = None,
   id:        Option[Long] = None)
 
 case class PickingUp(
@@ -17,7 +17,7 @@ case class PickingUp(
   seatCount: Int,
   vehicleId: Long,
   tripId:    Long,
-  done:      Option[VehicleArrivedPickUpLocation],
+  done:      Option[VehicleArrivedPickUpLocation] = None,
   id:        Option[Long] = None)
   extends Schedule(duration, location, seatCount, vehicleId, tripId, done, id)
 
