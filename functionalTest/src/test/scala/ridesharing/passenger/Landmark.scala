@@ -7,7 +7,7 @@ class Landmark extends TestBase {
   def feature =
     Feature("Landmark management") {
 
-      Scenario("Passenger register Landmark") {
+      Scenario("Passenger manage Landmark") {
         When User post(s"$BaseUrl/auth/signUp").withBody("""
             |{
             | "account": {
@@ -46,6 +46,25 @@ class Landmark extends TestBase {
         Then assert body.path("location.rate").is(0.0)
         Then assert body.path("location.latitude").is(35.662669)
         Then assert body.path("location.longitude").is(139.708962)
+
+        save_body_path("id" -> "landmark-id")
+
+        When Passenger put(s"$BaseUrl/passenger/landmarks/<landmark-id>").withBody("""
+            |{
+            | "id": <landmark-id>,
+            | "name": "ZOZO",
+            | "passengerId": <passenger-id>,
+            | "location": {
+            |   "linkId": 1,
+            |   "rate": 0.0,
+            |   "latitude": 35.662669,
+            |   "longitude": 139.708962
+            | }
+            |}
+          """.stripMargin)
+        show_last_response
+
+        Then assert body.path("name").is("ZOZO")
       }
     }
 }

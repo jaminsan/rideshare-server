@@ -36,8 +36,19 @@ class LandmarkEndpoints[F[_]: Effect] extends Http4sDsl[F] with QueryParameterMa
         } yield resp
     }
 
+  private def updateLandmarkEndpoint(landmarkRepository: LandmarkRepository[F]): HttpRoutes[F] =
+    HttpRoutes.of[F] {
+      case req @ PUT -> Root / "landmarks" / LongVar(landmarkId) =>
+        for {
+          landmark <- req.as[Landmark]
+          updated  = landmark.copy(id = landmarkId.some)
+          _        <- landmarkRepository.store(landmark)
+          resp     <- Ok(updated.asJson)
+        } yield resp
+    }
+
   def endpoints(landmarkRepository: LandmarkRepository[F]): HttpRoutes[F] =
-    crateLandmarkEndpoint(landmarkRepository) <+> listLandmarkEndpoint(landmarkRepository)
+    crateLandmarkEndpoint(landmarkRepository) <+> listLandmarkEndpoint(landmarkRepository) <+> updateLandmarkEndpoint(landmarkRepository)
 }
 
 object LandmarkEndpoints {
