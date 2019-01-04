@@ -9,7 +9,8 @@ import ridesharing.domain.operation.vehicle.Vehicle
 case class OperationSchedule(
   vehicles:  List[Vehicle],
   trips:     List[Trip],
-  schedules: List[Schedule[ScheduleDone]]
+  schedules: List[Schedule[ScheduleDone]],
+  id:        Option[Long]
 ) {
 
   def reschedule(requests: List[Request]): List[OperationSchedule] = ???
