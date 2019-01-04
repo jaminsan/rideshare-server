@@ -1,15 +1,15 @@
 # REST API 勉強会
 
 ## アジェンダ
-- [目的共有](##目的)
-- [REST API の基本を知ろう](##restapiの基本)
+- [目的共有](#目的)
+- [REST API の基本を知ろう](#rest-api-の基本)
     - REST API ガイドライン
     - API 設計
-- [REST API 実装してみよう](##restapiを実装してみよう)
+- [REST API 実装してみよう](###rest-api-実装)
     - テーマ説明
     - コード説明
     - TODO 説明
-- [その他](##その他)
+- [その他](#その他)
 
 ## 目的
 - REST API の設計がなんとなくできるようになる
@@ -68,6 +68,12 @@
         - トランザクション境界をリソースの単位にすると良いかも
 
 ## REST API 実装
+
+### テーマ
+- [Smart Access Vehicle（SAV）の取り組み](http://www.its-jp.org/wp-content/uploads/2016/11/kikaku-3-3.pdf)
+- [AIを活用した次世代２次交通システムの取組み](http://www.t-expo.jp/_shared/pdf/180925_TEJ18_keynote.pdf)
+- [名古屋で始まるタクシーの新たな形　つばめタクシー×はこだて未来大学×NTTドコモ×未来シェア](https://ligare.news/story/tsubame-taxi/)
+- [Smart Access Vehicle System 公共交通䛾クラウド化䛾提案と実装](http://www.jpgrid.org/ws44_nakashima.pdf)
 
 ### コード説明
 - [このリポジトリ](https://github.com/pauljamescleary/scala-pet-store)をパクりました
