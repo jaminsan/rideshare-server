@@ -92,8 +92,8 @@
 | /me                           | GET          |                      |
 | /landmarks                    | POST         | ランドマーク一覧登録    |
 | /landmarks                    | GET          | ランドマーク一覧取得    |
-| /landmarks/:id                | GET          | ランドマーク一覧取得    |
-| /trips                        | POST         | ランドマーク一覧更新    |
+| /landmarks/:id                | GET          | ランドマーク一覧更新    |
+| /trips                        | POST         |                      |
 | /trips/current                | GET          |                      |
 | /trips/current/changeRequests | POST         |                      |
 
