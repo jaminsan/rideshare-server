@@ -1,6 +1,6 @@
 package ridesharing.domain.operation
 
-import ridesharing.domain.operation.trip.Trip
+import ridesharing.domain.operation.trip.{Receipt, Trip}
 import ridesharing.domain.operation.trip.request.Request
 import ridesharing.domain.operation.vehicle.Vehicle
 
@@ -14,4 +14,8 @@ case class OperationSchedule(
 ) {
 
   def reschedule(requests: List[Request]): List[OperationSchedule] = ???
+
+  def doneSchedule(scheduleId: Long): List[OperationSchedule] = ???
+
+  def adjustFare(tripId: Long): Receipt = ???
 }

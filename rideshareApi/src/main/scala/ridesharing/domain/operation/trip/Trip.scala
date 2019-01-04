@@ -6,6 +6,5 @@ package ridesharing.domain.operation.trip
 case class Trip(
   id:          Option[Long],
   passengerId: Long,
-  schedules:   List[Long],
-  receipt:     Option[Receipt] = None
+  schedules:   List[Long]
 )

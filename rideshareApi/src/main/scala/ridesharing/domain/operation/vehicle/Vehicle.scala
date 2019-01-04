@@ -7,7 +7,7 @@ case class Vehicle(
   state:                State,
   seatCount:            Int,
   speedMeterPerSeconds: Int,
-  schedules:            List[Long] = Nil,
+  operation:            Option[Operation] = None,
   id:                   Option[Long] = None
 ) {
 
